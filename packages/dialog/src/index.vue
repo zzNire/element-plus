@@ -20,6 +20,7 @@
             'el-dialog',
             {
               'is-fullscreen': fullscreen,
+              'is-draggable': draggable,
               'el-dialog--center': center,
             },
             customClass,
@@ -76,6 +77,7 @@ import {
 } from './useDialog'
 
 import type { PropType, SetupContext } from 'vue'
+import type { UseDialogProps } from './dialog'
 
 
 export default defineComponent({
@@ -159,6 +161,10 @@ export default defineComponent({
     zIndex: {
       type: Number,
     },
+    draggable: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     OPEN_EVENT,
@@ -170,7 +176,7 @@ export default defineComponent({
   setup(props, ctx) {
     const dialogRef = ref<HTMLElement>(null)
     return {
-      ...useDialog(props, ctx as SetupContext, dialogRef),
+      ...useDialog(props as UseDialogProps, ctx as SetupContext, dialogRef),
       dialogRef,
     }
   },

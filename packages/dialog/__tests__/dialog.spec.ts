@@ -259,5 +259,22 @@ describe('Dialog.vue', () => {
       expect(onClosed).toHaveBeenCalled()
       expect(visible).toBe(false)
     })
+
+    test('should render draggable prop', async () => {
+      const wrapper = _mount({
+        slots: {
+          default: AXIOM,
+        },
+        props: {
+          modelValue: true,
+          draggable: true,
+        },
+      })
+
+      await nextTick()
+      await rAF()
+      await nextTick()
+      expect(wrapper.find('.is-draggable').exists()).toBe(true)
+    })
   })
 })

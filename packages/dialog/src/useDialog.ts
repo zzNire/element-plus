@@ -1,9 +1,9 @@
-import { computed, ref, watch, nextTick, onMounted } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 
 import isServer from '@element-plus/utils/isServer'
 import { UPDATE_MODEL_EVENT } from '@element-plus/utils/constants'
 import PopupManager from '@element-plus/utils/popup-manager'
-import { clearTimer, isNumber } from '@element-plus/utils/util'
+import { addUnit, clearTimer, isNumber } from '@element-plus/utils/util'
 import { useLockScreen, useRestoreActive, useModal } from '@element-plus/hooks'
 
 import type { Ref, CSSProperties, SetupContext } from 'vue'
@@ -15,18 +15,19 @@ export const CLOSED_EVENT = 'closed'
 export const OPENED_EVENT = 'opened'
 export { UPDATE_MODEL_EVENT }
 
-export default function(props: UseDialogProps, ctx: SetupContext, targetRef: Ref<HTMLElement>) {
+export default function (props: UseDialogProps, ctx: SetupContext, targetRef: Ref<HTMLElement>) {
   const visible = ref(false)
   const closed = ref(false)
   const dialogRef = ref(null)
   const openTimer = ref<TimeoutHandle>(null)
   const closeTimer = ref<TimeoutHandle>(null)
-  const rendered = ref(false) // when desctroyOnClose is true, we initialize it as false vise versa
+  const rendered = ref(false) // when destroyOnClose is true, we initialize it as false vise versa
   const zIndex = ref(props.zIndex || PopupManager.nextZIndex())
   const modalRef = ref<HTMLElement>(null)
+  const headerRef = ref<HTMLElement>(null)
 
   const normalizeWidth = () => {
-    if(isNumber(props.width))
+    if (isNumber(props.width))
       return `${props.width}px`
     else
       return props.width
@@ -35,7 +36,9 @@ export default function(props: UseDialogProps, ctx: SetupContext, targetRef: Ref
   const style = computed(() => {
     const style = {} as CSSProperties
     if (!props.fullscreen) {
-      style.marginTop = props.top
+      if (!props.draggable) {
+        style.top = props.top
+      }
       if (props.width) {
         style.width = normalizeWidth()
       }
@@ -155,11 +158,58 @@ export default function(props: UseDialogProps, ctx: SetupContext, targetRef: Ref
     }
   })
 
+  const onMousedown = e => {
+    const downX = e.clientX
+    const downY = e.clientY
+
+    const targetRect = targetRef.value.getBoundingClientRect()
+    const targetWidth = targetRect.width
+    const targetHeight = targetRect.height
+
+    const clientWidth = document.documentElement.clientWidth
+    const clientHeight = document.documentElement.clientHeight
+
+    const maxLeft = clientWidth - targetWidth
+    const maxTop = clientHeight - targetHeight
+
+    const onMousemove = e => {
+      const moveX = e.clientX - downX
+      const moveY = e.clientY - downY
+
+      const left = Math.min(Math.max(targetRect.left + moveX, 0), maxLeft)
+      const top = Math.min(Math.max(targetRect.top + moveY, 0), maxTop)
+
+      targetRef.value.style.left = addUnit(left)
+      targetRef.value.style.top = addUnit(top)
+      targetRef.value.style.right = 'unset'
+      targetRef.value.style.bottom = 'unset'
+    }
+
+    const onMouseup = () => {
+      document.removeEventListener('mousemove', onMousemove)
+      document.removeEventListener('mouseup', onMouseup)
+    }
+
+    document.addEventListener('mousemove', onMousemove)
+    document.addEventListener('mouseup', onMouseup)
+  }
+
   onMounted(() => {
     if (props.modelValue) {
       visible.value = true
       rendered.value = true // enables lazy rendering
       open()
+    }
+    if (!props.fullscreen && props.draggable) {
+      targetRef.value.style.top = props.top
+      headerRef.value = targetRef.value.querySelector('.el-dialog__header')
+      headerRef.value.addEventListener('mousedown', onMousedown)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    if (!props.fullscreen && props.draggable) {
+      headerRef.value.removeEventListener('mousedown', onMousedown)
     }
   })
 
@@ -174,6 +224,7 @@ export default function(props: UseDialogProps, ctx: SetupContext, targetRef: Ref
     style,
     rendered,
     modalRef,
+    headerRef,
     visible,
     zIndex,
   }

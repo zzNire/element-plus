@@ -14,30 +14,29 @@
 }
 
 @include b(dialog) {
-  position: relative;
-  margin: 0 auto 50px;
+  position: absolute;
+  margin: 0 auto;
   background: var(--el-dialog-background-color);
   border-radius: var(--el-border-radius-small);
   box-shadow: var(--el-dialog-box-shadow);
   box-sizing: border-box;
   width: 50%;
+  left: 0;
+  right: 0;
 
   @include when(fullscreen) {
     width: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
     height: 100%;
+    top: 0;
+    bottom: 0;
     overflow: auto;
   }
 
-  @include e(wrapper) {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: auto;
-    margin: 0;
+  @include when(draggable) {
+    @include e(header) {
+      cursor: move;
+      user-select: none;
+    }
   }
 
   @include e(header) {
@@ -75,8 +74,7 @@
   }
 
   @include e(body) {
-    padding: calc(var(--el-dialog-padding-primary) + 10px)
-      var(--el-dialog-padding-primary);
+    padding: calc(var(--el-dialog-padding-primary) + 10px) var(--el-dialog-padding-primary);
     color: var(--el-text-color-regular);
     font-size: var(--el-dialog-content-font-size);
     word-break: break-all;
@@ -106,6 +104,7 @@
 
 .dialog-fade-enter-active {
   animation: modal-fade-in var(--el-transition-duration) !important;
+
   .#{$namespace}-dialog {
     animation: dialog-fade-in var(--el-transition-duration);
   }
@@ -113,6 +112,7 @@
 
 .dialog-fade-leave-active {
   animation: modal-fade-out var(--el-transition-duration);
+
   .#{$namespace}-dialog {
     animation: dialog-fade-out var(--el-transition-duration);
   }

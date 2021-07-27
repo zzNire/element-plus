@@ -5,6 +5,7 @@ export interface UseDialogProps {
   closeDelay: number
   destroyOnClose: boolean
   fullscreen?: boolean
+  draggable?: boolean
   lockScroll: boolean
   modelValue: boolean
   openDelay: number

@@ -52,7 +52,7 @@ Dialog abre una caja de diálogo, y es bastante personalizable.
   export default defineComponent({
     setup() {
       const dialogVisible = ref(false);
-      
+
       const handleClose = (done) => {
         ElMessageBox
           .confirm('Are you sure to close this dialog?')
@@ -374,6 +374,58 @@ When this is feature is enabled, the content under default slot will be destroye
 -->
 
 ```
+:::
+
+### Draggable Dialog
+
+Try to drag the `header` part.
+
+:::demo Set `draggable` to `true` to drag.
+
+```html
+<el-button type="text" @click="dialogVisible = true">Click to open Dialog</el-button>
+
+<el-dialog
+  title="Tips"
+  v-model="dialogVisible"
+  width="30%"
+  draggable>
+  <span>It's a draggable Dialog</span>
+  <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogVisible = false">Cancel</el-button>
+      <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+    </span>
+  </template>
+
+</el-dialog>
+
+<script>
+  export default {
+    data() {
+      return {
+        dialogVisible: false
+      };
+    }
+  };
+</script>
+<!--
+<setup>
+
+  import { defineComponent, ref } from 'vue';
+
+  export default defineComponent({
+    setup() {
+      return {
+        dialogVisible: ref(false),
+      };
+    },
+  });
+
+</setup>
+-->
+```
+:::
 
 :::tip
 When using `modal` = false, please make sure that `append-to-body` was set to **true**, because `Dialog` was positioned by `position: relative`, when `modal` gets removed, `Dialog` will position itself based on the current position in the DOM, instead of `Document.Body`, thus the style will be messed up.
@@ -399,6 +451,7 @@ When using `modal` = false, please make sure that `append-to-body` was set to **
 | before-close          | una devolución de llamada antes de que se cierre el cuadro de diálogo, y evitar cerrar el cuadro de diálogo | función(done) `done`se usa para cerrar el diálog | —                 | —           |
 | center                | si alinear el encabezado y el pie de página en el centro | boolean                                  | —                 | false       |
 | destroy-on-close      | Destruir elementos en Dialog cuando se cierra | boolean                                  | —                 | false         |
+| draggable | whether can drag Dialog | boolean | — | false |
 
 ### Slots
 

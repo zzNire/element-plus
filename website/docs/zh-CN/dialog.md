@@ -51,7 +51,7 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
   export default defineComponent({
     setup() {
       const dialogVisible = ref(false);
-      
+
       const handleClose = (done) => {
         ElMessageBox
           .confirm('确认关闭？')
@@ -373,6 +373,57 @@ Dialog 的内容是懒渲染的，即在第一次被打开之前，传入的默�
 
 :::
 
+### 可拖拽的 Dialog
+
+试着点击并拖拽 `header` 部分。
+
+:::demo 将 `draggable` 设置为 `true` 即可拖拽。
+
+```html
+<el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
+
+<el-dialog
+  title="提示"
+  v-model="dialogVisible"
+  width="30%"
+  draggable>
+  <span>这是一个可拖拽的 Dialog</span>
+  <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+  </template>
+
+</el-dialog>
+
+<script>
+  export default {
+    data() {
+      return {
+        dialogVisible: false
+      };
+    }
+  };
+</script>
+<!--
+<setup>
+
+  import { defineComponent, ref } from 'vue';
+
+  export default defineComponent({
+    setup() {
+      return {
+        dialogVisible: ref(false),
+      };
+    },
+  });
+
+</setup>
+-->
+```
+:::
+
 
 :::tip
 当使用 `modal` = false 时，请一定保证 `Dialog` 的 `append-to-body` 属性为 **true**, 因为 `Dialog` 的定位是通过 `position: relative` 来定位的，当 `modal` 不存在当时候，如果不将 `Dialog` 插入到 `Document.Body` 下，则会根据当前的位置进行定位，会导致样式错乱
@@ -398,6 +449,7 @@ Dialog 的内容是懒渲染的，即在第一次被打开之前，传入的默�
 | before-close | 关闭前的回调，会暂停 Dialog 的关闭 | function(done)，done 用于关闭 Dialog | — | — |
 | center | 是否对头部和底部采用居中布局 | boolean | — | false |
 | destroy-on-close | 关闭时销毁 Dialog 中的元素 | boolean | — | false |
+| draggable | 是否可拖拽 Dialog | boolean | — | false |
 
 ### Slot
 | name | 说明 |
