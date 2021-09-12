@@ -11701,10 +11701,10 @@ normalize-url@^3.0.0, normalize-url@^3.3.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
-normalize-wheel@^1.0.1:
+normalize-wheel-es@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/normalize-wheel/-/normalize-wheel-1.0.1.tgz#aec886affdb045070d856447df62ecf86146ec45"
-  integrity sha1-rsiGr/2wRQcNhWRH32Ls+GFG7EU=
+  resolved "https://registry.yarnpkg.com/normalize-wheel-es/-/normalize-wheel-es-1.0.1.tgz#677952bf7720ede5c755f675bdaa007ab7e422f9"
+  integrity sha512-7gLH4NrMSmPbiKxFOeyguqevyUo96L6poAR/0NBS7nDUewsnDtt2aUzV5a42xPIpNPHh0boEfsJNPJ2KmeQPWQ==
 
 now-and-later@^2.0.0:
   version "2.0.1"

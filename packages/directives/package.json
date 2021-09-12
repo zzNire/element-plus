@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/utils": "^0.0.5",
-    "normalize-wheel": "^1.0.1"
+    "normalize-wheel-es": "^1.0.1"
   },
   "devDependencies": {
     "@element-plus/test-utils": "^0.0.5",

@@ -6,7 +6,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 const libMode = process.env.LIBMODE
 const isFullMode = libMode === 'full'
-let externals = [
+const externals = [
   {
     vue: {
       root: 'Vue',
@@ -28,7 +28,7 @@ if (!isFullMode) {
       '@popperjs/core': '@popperjs/core',
       'async-validator': 'async-validator',
       mitt: 'mitt',
-      'normalize-wheel': 'normalize-wheel',
+      'normalize-wheel-es': 'normalize-wheel-es',
       'resize-observer-polyfill': 'resize-observer-polyfill',
     },
     /^dayjs.*/,
